@@ -83,23 +83,25 @@ const accelerations = [{
   "company_count": 1
 }]
 
-export default function Acceleration() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          style={styles.headerImage}
-          source={{uri: 'https://forum.codenation.com.br/uploads/default/original/2X/2/2d2d2a9469f0171e7df2c4ee97f70c555e431e76.png'}}
+export default class Acceleration extends React.Component{
+  render(){
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Image
+            style={styles.headerImage}
+            source={{uri: 'https://forum.codenation.com.br/uploads/default/original/2X/2/2d2d2a9469f0171e7df2c4ee97f70c555e431e76.png'}}
+          />
+        </View>
+        <Text style={styles.title}>Acelerações</Text>
+        <FlatList
+          data={accelerations}
+          keyExtractor={item => item.slug}
+          renderItem={({item, index}) => <AccelerationItem item={item} />}
         />
       </View>
-      <Text style={styles.title}>Acelerações</Text>
-      <FlatList
-        data={accelerations}
-        keyExtractor={item => item.slug}
-        renderItem={({item, index}) => <AccelerationItem item={item} />}
-      />
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
