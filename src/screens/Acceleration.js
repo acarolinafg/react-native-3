@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  Image, 
+  FlatList,
+  TouchableOpacity
+ } from 'react-native';
 
 import AccelerationItem from '../components/AccelerationItem';
 
@@ -86,9 +93,11 @@ const accelerations = [{
 export default class Acceleration extends React.Component{
   constructor(props) {
     super(props);
+    
   }
 
   render(){
+    const navigation = this.props.navigation;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -96,6 +105,15 @@ export default class Acceleration extends React.Component{
             style={styles.headerImage}
             source={{uri: 'https://forum.codenation.com.br/uploads/default/original/2X/2/2d2d2a9469f0171e7df2c4ee97f70c555e431e76.png'}}
           />
+          <TouchableOpacity 
+            onPress={() => navigation.navigate("Profile")}
+            className={"user-image-btn"}
+          >
+            <Image
+              style={styles.profileImage}
+              source={{ uri:"https://secure.gravatar.com/avatar/f50a9db56e231198af3507f10b5d5491?d=mm" }}
+            />
+          </TouchableOpacity>
         </View>
         <Text style={styles.title}>Acelerações</Text>
         <FlatList
@@ -129,5 +147,10 @@ const styles = StyleSheet.create({
         color: '#7800ff',
         fontSize: 30,
         padding: 16
-    }
+    },
+    profileImage: {
+      borderRadius: 22,
+      height: 45,
+      width: 45
+    },
 });
