@@ -124,7 +124,6 @@ export default class Acceleration extends React.Component{
         {this.modal()}
       </Modal>
     ) : null;
-
     return (
       <View style={styles.container}>
         <View style={styles.header}>
