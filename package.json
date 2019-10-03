@@ -14,6 +14,7 @@
 		"preset": "jest-expo"
 	},
 	"dependencies": {
+		"codenation-jest-score": "https://github.com/thecodenation/codenation-jest-score/tarball/master",
 		"expo": "^33.0.0",
 		"moment": "^2.24.0",
 		"react": "16.8.3",

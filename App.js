@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Acceleration from './src/screens/Acceleration';

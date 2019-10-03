@@ -192,6 +192,10 @@ export default class Acceleration extends React.Component{
   }
 }
 
+Acceleration.navigationOptions = {
+  title: 'Acceleration'
+}
+
 const styles = StyleSheet.create({
     container: {
       flex: 1,
