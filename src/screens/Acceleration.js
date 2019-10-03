@@ -1,11 +1,13 @@
 import React from 'react';
+import moment from "moment";
 import { 
   StyleSheet, 
   Text, 
   View, 
   Image, 
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
  } from 'react-native';
 
 import AccelerationItem from '../components/AccelerationItem';
@@ -93,11 +95,36 @@ const accelerations = [{
 export default class Acceleration extends React.Component{
   constructor(props) {
     super(props);
-    
+    this.state = { modalVisible: false };
+    this._showModal = this._showModal.bind(this);
+    this._hideModal = this._hideModal.bind(this);
+    detailsItems: null;
+  }
+
+  _showModal(item) {
+    this.setState({ modalVisible: true });
+    this.setState({ detailsItems: item });
+  }
+
+  _hideModal() {
+    this.setState({ modalVisible: false });
+    this.setState({ detailsItems: null });
   }
 
   render(){
     const navigation = this.props.navigation;
+    const modal = this.state.modalVisible ? (
+      <Modal
+        style={styles.modalContainer}
+        animationType={"slide"}
+        transparent={false}
+        visible={this.state.modalVisible}
+        onRequestClose={this._hideModal}
+      >
+        {this.modal()}
+      </Modal>
+    ) : null;
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -119,8 +146,48 @@ export default class Acceleration extends React.Component{
         <FlatList
           data={accelerations}
           keyExtractor={item => item.slug}
-          renderItem={({item, index}) => <AccelerationItem item={item} />}
+          renderItem={({item, index}) =>(
+            <TouchableOpacity
+              onPress={() => {this._showModal(item);}}
+              className="acceleration-item-btn"
+            >
+              <AccelerationItem item={item} />
+            </TouchableOpacity>
+          )}
         />
+
+        {modal}
+
+      </View>
+    );
+  }
+
+  modal(){
+    const item = this.state.detailsItems;
+    return(
+      <View>
+        <Image
+          style={styles.modalImage}
+          source={{
+            uri: item.banner_url
+              ? item.banner_url
+              : "http://denrakaev.com/wp-content/uploads/2015/03/no-image.png"
+          }}
+        />
+        <View>
+          <Text style={styles.modalTitle}>{item.name}</Text>
+          <Text style={styles.modalText}>Local: {item.location}</Text>
+          <Text style={styles.modalText}>
+            Inscrição + desafio enviado até {moment(item.subscription_finish_at).format("DD/MM/YYYY")}
+          </Text>
+        </View>
+        <TouchableOpacity
+          style={styles.modalBtn}
+          onPress={this._hideModal}
+          className="close-modal-btn"
+        >
+          <Text>FECHAR</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -128,29 +195,67 @@ export default class Acceleration extends React.Component{
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
+      flex: 1,
+      backgroundColor: '#fff',
     },
     header: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        borderBottomColor: '#7800ff',
-        borderBottomWidth: 2,
-        padding: 16,
-        paddingTop: 55
+      alignItems: 'center',
+      flexDirection: 'row',
+      borderBottomColor: '#7800ff',
+      borderBottomWidth: 2,
+      padding: 16,
+      paddingTop: 55
     },
     headerImage: {
-        height: 45,
-        width: 250
+      height: 45,
+      width: 250
     },
     title: {
-        color: '#7800ff',
-        fontSize: 30,
-        padding: 16
+      color: '#7800ff',
+      fontSize: 30,
+      padding: 16
     },
     profileImage: {
       borderRadius: 22,
       height: 45,
       width: 45
     },
+    modalContainer:{
+      flex: 1,
+      flexDirection: "column",
+      alignItems: "center",
+      width: "100%",
+      backgroundColor: "#FFF",
+      padding: 10
+    },
+    modalImage: {
+      height: 200,
+      width: 340,
+      margin: 10,
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    modalTitle:{
+      fontSize: 22,
+      color: "#7800ff",
+      marginLeft: 30,
+      paddingTop: 5
+    },
+    modalText:{
+      marginLeft: 30,
+      paddingTop: 10,
+      textAlign: "left"
+    },
+    modalBtn:{
+      backgroundColor: "#fff",
+      borderColor: "#7800ff",
+      borderWidth: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 10,
+      marginLeft: 30,
+      paddingTop: 10,
+      width: 300,
+      height: 50
+    }
 });
