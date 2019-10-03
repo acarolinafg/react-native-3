@@ -97,7 +97,7 @@ export default class Acceleration extends React.Component{
   }
 
   render(){
-    const navigation = this.props.navigation;
+    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.header}>
